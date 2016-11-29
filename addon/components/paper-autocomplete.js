@@ -16,6 +16,8 @@ const { assert, computed, inject, isNone, defineProperty } = Ember;
 export default PowerSelect.extend(ValidationMixin, ChildMixin, {
   util: inject.service(),
   constants: inject.service(),
+  scroll: inject.service(),
+
   triggerComponent: 'paper-autocomplete-trigger',
   contentComponent: 'paper-autocomplete-content',
   optionsComponent: 'paper-autocomplete-options',
@@ -71,6 +73,7 @@ export default PowerSelect.extend(ValidationMixin, ChildMixin, {
     }
     // e-p-s will close
     this._super(...arguments);
+    this.get('scroll').enableScrolling();
   },
 
   actions: {
@@ -87,6 +90,9 @@ export default PowerSelect.extend(ValidationMixin, ChildMixin, {
       if (action) {
         action(publicAPI, event);
       }
+      if (event.target.nodeName === 'INPUT') {
+        this.get('scroll').disableScrollAround();
+      }
     },
 
     onBlur(event) {
@@ -97,6 +103,7 @@ export default PowerSelect.extend(ValidationMixin, ChildMixin, {
         action(this.get('publicAPI'), event);
       }
       this.notifyValidityChange();
+      this.get('scroll').enableScrolling();
     },
 
     onInput(event) {
@@ -115,6 +122,7 @@ export default PowerSelect.extend(ValidationMixin, ChildMixin, {
         this.get('onCreate')(text);
       }
       this.get('publicAPI').actions.close();
+      this.get('scroll').enableScrolling();
     },
 
     scrollTo(option) {
