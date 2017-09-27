@@ -39,6 +39,7 @@ const VirtualRepeatComponent = VirtualEachComponent.extend({
     if (this.get('horizontal')) {
       return false;
     }
+
     return this.get('size');
   }),
 
@@ -51,7 +52,7 @@ const VirtualRepeatComponent = VirtualEachComponent.extend({
     // {top, left, right, width}
     Object.keys(coords).forEach((type) => {
       if (coords[type]) {
-        style += `${type}: ${coords[type]}; `;
+        style += `${dasherize(type)}: ${coords[type]}; `;
       }
     });
 
@@ -59,12 +60,13 @@ const VirtualRepeatComponent = VirtualEachComponent.extend({
   }).readOnly(),
 
   style: computed('height', 'positionStyle', function() {
-    let height = this.get('height') || null;
+    let height = this.get('height');
     let style = this.get('positionStyle');
 
     if (height !== null && !isNaN(height)) {
       style += ` height: ${height}px;`;
     }
+
     return htmlSafe(style);
   }).readOnly(),
 
@@ -134,10 +136,12 @@ const VirtualRepeatComponent = VirtualEachComponent.extend({
     RSVP.cast(this.get('items')).then((attrItems) => {
       let items = emberArray(attrItems);
       let itemsCount = this.get('totalItemsCount') || get(items, 'length');
+      let itemHeight = this.getWithDefault('itemHeight', 0);
+
       this.setProperties({
         _items: items,
-        _positionIndex: this.get('positionIndex'),
-        _totalHeight: Math.max(itemsCount * this.get('itemHeight'), 0)
+        _positionIndex: this.getAttr('positionIndex'),
+        _totalHeight: Math.max(itemsCount * itemHeight, 0)
       });
 
       // Scroll index has changed, load more data & scroll
