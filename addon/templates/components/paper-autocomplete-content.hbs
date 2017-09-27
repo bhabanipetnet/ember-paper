@@ -12,7 +12,14 @@
       class=(concat dropdownId " md-autocomplete-suggestions-container" " ember-basic-dropdown-content " (if renderInPlace 'ember-basic-dropdown-content--in-place ') (if hPosition (concat 'ember-basic-dropdown-content--' hPosition ' ')) (if vPosition (concat 'ember-basic-dropdown-content--' vPosition ' ') "md-whiteframe-z1 ") animationClass)
       containerSelector='.md-autocomplete-suggestions'
       scrollIndex=(readonly select.scrollIndex)
-      positionCoordinates=(hash top=top left=left right=right width=width)
+      size=(readonly desiredHeight)
+      positionCoordinates=(hash
+        top=top
+        left=left
+        right=right
+        width=width
+        maxHeight=(concat maxHeight "px")
+      )
       as |rawItems virtualItems|}}
       {{yield virtualItems}}
     {{/paper-virtual-repeat}}
