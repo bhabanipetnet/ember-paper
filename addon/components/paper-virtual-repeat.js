@@ -23,12 +23,13 @@ const VirtualRepeatComponent = VirtualEachComponent.extend({
     }
   },
 
-  defaultAttrs: computed(function() {
-    return {
+  init() {
+    this._super(...arguments);
+    this.defaultAttrs = {
       scrollTimeout: 30,
       height: 48
-    };
-  }),
+    }
+  },
 
   size: computed('initialSize', 'items.[]', 'itemHeight', function() {
     let itemSize = this.get('itemHeight');
@@ -138,7 +139,7 @@ const VirtualRepeatComponent = VirtualEachComponent.extend({
 
       this.setProperties({
         _items: items,
-        _positionIndex: this.getAttr('positionIndex'),
+        _positionIndex: this.get('positionIndex'),
         _totalHeight: Math.max(itemsCount * itemHeight, 0)
       });
 
