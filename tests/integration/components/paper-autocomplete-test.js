@@ -290,3 +290,28 @@ test('dropdown can be customized using dropdownClass', function(assert) {
     });
   });
 });
+
+test('when required and touched, an invalid class is present', function(assert) {
+  assert.expect(2);
+
+  this.items = ['1', '2', '3', '4'];
+  this.render(hbs`{{#paper-autocomplete
+    label="Fooo"
+    options=items
+    required=true
+    onSelectionChange=(action (mut selectedItem))
+    as |item autocomplete|}}
+  {{/paper-autocomplete}}`);
+
+  let inputElement = $('md-autocomplete-wrap input')[0];
+  assert.notOk($('md-input-container').hasClass('md-input-invalid'));
+
+  run(() => {
+    inputElement.focus();
+    inputElement.blur();
+  });
+
+  return wait().then(() => {
+    assert.ok($('md-input-container').hasClass('md-input-invalid'));
+  });
+});
