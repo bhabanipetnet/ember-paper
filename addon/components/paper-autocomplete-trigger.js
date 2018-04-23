@@ -140,6 +140,7 @@ export default Component.extend({
     },
 
     resetButtonDestroyed() {
+      if (this.isDestroying || this.isDestroyed) return;
       if (this.get('disabled')) {
         this.set('resetButtonDestroyed', true);
       }
