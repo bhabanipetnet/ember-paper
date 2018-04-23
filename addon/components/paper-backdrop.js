@@ -29,7 +29,13 @@ export default Component.extend(TransitionMixin, {
   }),
 
   addDestroyedElementClone(original, clone) {
-    original.parentNode.appendChild(clone);
+    if (original.previousElementSibling) {
+      original.insertAdjacentElement('afterend', clone);
+      return;
+    }
+
+    const parent = original.parentNode;
+    parent.insertBefore(clone, parent.firstChild);
   },
 
   sendClickAction(e) {
