@@ -71,7 +71,13 @@ export default Component.extend(FocusableMixin, ColorMixin, ChildMixin, Validati
   didReceiveAttrs() {
     this._super(...arguments);
     assert('{{paper-input}} requires an `onChange` action or null for no action.', this.get('onChange') !== undefined);
-    this.notifyValidityChange();
+
+    let value = this.get('value');
+    let prevValue = this.get('_prevValue');
+    if (value !== prevValue) {
+      this.notifyValidityChange();
+    }
+    this._prevValue = value;
   },
 
   didInsertElement() {
