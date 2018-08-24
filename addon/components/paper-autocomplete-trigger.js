@@ -82,7 +82,7 @@ export default Component.extend({
     },
 
     resetButtonDestroyed() {
-      if (this.get('disabled')) {
+      if (this.get('disabled') && !(this.isDestroyed || this.isDestroying)) {
         this.set('resetButtonDestroyed', true);
       }
     }
