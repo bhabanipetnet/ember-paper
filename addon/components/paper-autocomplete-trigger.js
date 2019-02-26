@@ -25,8 +25,8 @@ export default Component.extend({
     );
   }),
 
-  text: computed('select.{searchText,selected}', function() {
-    let selected = this.get('select.selected');
+  text: computed('select.{searchText,selected}', 'selectedValue', function() {
+    let selected = this.get('selectedValue');
     if (selected) {
       return this.getSelectedAsText();
     }
@@ -82,7 +82,7 @@ export default Component.extend({
     },
 
     resetButtonDestroyed() {
-      if (this.get('disabled')) {
+      if (this.get('disabled') && !(this.isDestroyed || this.isDestroying)) {
         this.set('resetButtonDestroyed', true);
       }
     }

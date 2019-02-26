@@ -12,6 +12,9 @@ import ChildMixin from 'ember-paper/mixins/child-mixin';
 import { indexOfOption } from 'ember-power-select/utils/group-utils';
 import calculatePosition from '../utils/calculate-ac-position';
 
+import { get } from '@ember/object';
+import ObjectProxy from '@ember/object/proxy';
+
 /**
  * @class PaperAutocomplete
  * @extends PowerSelectComponent
@@ -106,6 +109,13 @@ export default PowerSelect.extend(ValidationMixin, ChildMixin, {
     this.notifyValidityChange();
   },
 
+  selectedValue: computed('publicAPI.{selected,selected.content}', function() {
+    if (get(this, 'publicAPI.selected') instanceof ObjectProxy) {
+      return get(this, 'publicAPI.selected.content');
+    }
+    return get(this, 'publicAPI.selected');
+  }),
+
   actions: {
 
     onTriggerMouseDown() {
@@ -116,7 +126,7 @@ export default PowerSelect.extend(ValidationMixin, ChildMixin, {
       this.send('activate');
       let publicAPI = this.get('publicAPI');
 
-      if (isNone(publicAPI.selected)) {
+      if (isNone(get(this, 'selectedValue'))) {
         publicAPI.actions.open(event);
       }
 

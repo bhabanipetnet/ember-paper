@@ -10,8 +10,15 @@
         animationClass)
       containerSelector=".md-autocomplete-suggestions"
       scrollIndex=(readonly select.scrollIndex)
-      positionCoordinates=(hash top=top left=left right=right width=width)
-    as |rawItems virtualItems|}}
+      size=(readonly desiredHeight)
+      positionCoordinates=(hash
+        top=top
+        left=left
+        right=right
+        width=width
+        maxHeight=(concat maxHeight "px")
+      )
+      as |rawItems virtualItems|}}
       {{yield virtualItems}}
     {{/paper-virtual-repeat}}
   {{/maybe-in-element}}
